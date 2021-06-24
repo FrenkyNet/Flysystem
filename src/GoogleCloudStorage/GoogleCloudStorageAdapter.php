@@ -78,6 +78,7 @@ class GoogleCloudStorageAdapter implements FilesystemAdapter
     {
         $prefixedPath = $this->prefixer->prefixPath($path);
         $visibility = $config->get(Config::OPTION_VISIBILITY, $this->defaultVisibility);
+        $metadata = $config->get('metadata', []);
 
         try {
             $this->bucket->upload(
@@ -85,6 +86,7 @@ class GoogleCloudStorageAdapter implements FilesystemAdapter
                 [
                     'name' => $prefixedPath,
                     'predefinedAcl' => $this->visibilityHandler->visibilityToPredefinedAcl($visibility),
+                    'metadata' => $metadata,
                 ]
             );
         } catch (Throwable $exception) {
