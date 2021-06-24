@@ -414,7 +414,13 @@ class Ftp extends AbstractFtpAdapter
             array_shift($listing);
         }
 
-        return $this->normalizeObject($listing[0], '');
+        foreach ($listing as $entry) {
+            $file = $this->normalizeObject($entry, '');
+
+            if ($file['path'] === basename($path)) return $file;
+        }
+
+        return false;
     }
 
     /**
